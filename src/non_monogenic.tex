@@ -1,0 +1,216 @@
+%! Author = ferran
+%! Date = 14/10/23
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+% Packages
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{tikz-cd}
+\usepackage{wasysym}
+\usepackage{nicefrac}
+
+\title{Example of a non-monogenic number field by Dedekind}
+\author{Ferran Espuña Bertomeu}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+
+\theoremstyle{definition}
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{rk}[theorem]{Remark}
+
+
+
+% Document
+\begin{document}
+
+    \maketitle
+
+    \begin{claim}
+        $f(X)=X^3-X^2-2X-8$ is irreducible over $\mathbb{Q}$.
+    \end{claim}
+    \begin{proof}
+        Suppose $f$ splits over $\mathbb{Q}$.
+        It must do so in polynomials of degree $1$ and $2$.
+        Therefore, it has a root in $\mathbb{Q}$.
+        By the rational root theorem, the only possible rational roots of  $f$ are $\pm 1, \pm 2, \pm 4, \pm 8$.
+        None of these are roots of $f$.
+    \end{proof}
+
+    \begin{rk}
+        Let $\theta$ be a root of $f$.
+        Then, $K = \mathbb{Q}(\theta)$ is a field extension of $\mathbb{Q}$ of degree $3$,
+        and a $\mathbb{Q}$-basis of $K$ is $B \coloneqq \{1, \theta, \theta^2\}$. Expressed in this basis,
+        the multiplication by $\theta$ is given by the matrix
+        \[T_{\theta}^{B} = M \coloneqq
+            \begin{pmatrix}
+                0 & 0 & 8 \\
+                1 & 0 & 2 \\
+                0 & 1 & 1
+            \end{pmatrix}
+        \]
+    \end{rk}
+
+    \begin{claim}
+        $\alpha \coloneqq 4/\theta \in \mathcal{O}_K$.
+    \end{claim}
+    \begin{proof}
+
+        Clearly $\mathbb{Q}(\theta) = \mathbb{Q}(\alpha)$, $\alpha$ must be a root of a monic irreducible degree $3$ polynomial $g$ over $\mathbb{Q}$.
+        We will show that in fact $g$ has integer coefficients.
+        Multiplying by $\alpha$ is expressed by the matrix
+        \[T_{\alpha}^{B} = N \coloneqq 4M^{-1} =
+            \begin{pmatrix}
+                -1 & 4 & 0 \\
+                -\frac{1}{2} & 0 & 4 \\
+                \frac{1}{2} &  0 & 0
+            \end{pmatrix}
+        \]
+        Multiplying the column vector $(1, 0, 0)^T$ by this matrix repeatedly,
+        we get:
+        \begin{align}
+            \alpha = \begin{pmatrix}
+                -1 \\
+                -\frac{1}{2} \\
+                \frac{1}{2}
+            \end{pmatrix},
+            \alpha^2 = \begin{pmatrix}
+                -1 \\
+                \phantom{-}\frac{5}{2} \\
+                -\frac{1}{2}
+            \end{pmatrix},
+            \alpha^3 = \begin{pmatrix}
+                11 \\
+                -\frac{3}{2} \\
+                -\frac{1}{2}
+            \end{pmatrix}
+        \end{align}
+
+        To calculate the coefficients of $g$, we want to express $\alpha^3$ as a linear combination of $\{1, \alpha, \alpha^2\}$.
+        That is, we want to compute:
+
+        \[
+             \begin{pmatrix}
+                1 & -1 & -1 \\
+                0 & -\frac{1}{2} & \frac{5}{2} \\
+                0 &  \frac{1}{2} & -\frac{1}{2}
+            \end{pmatrix}^{-1}
+            \begin{pmatrix}
+                11 \\
+                -\frac{3}{2} \\
+                -\frac{1}{2}
+            \end{pmatrix}
+             =
+            \begin{pmatrix}
+                8 \\
+                -2 \\
+                -1
+            \end{pmatrix}
+        \]
+        Therefore, $g(X) = X^3 +X^2 +2X -8$, Which has integer coefficients.
+
+
+    \end{proof}
+    
+    \begin{claim}
+        $\{1, \theta, \alpha\}$ is an integral basis of $\mathcal{O}_K$.
+    \end{claim}
+    \begin{proof}
+        We know that all three elements are in $\mathcal{O}_K$.
+        Furthermore, they are linearly independent over $\mathbb{Q}$
+        (otherwise, $a\theta+4b/\theta+c=0 \Rightarrow a\theta^2+c\theta+4b=0$,
+        which is impossible since $\{1, \theta, \theta^2\}$ are linearly independent over $\mathbb{Q}$).
+        Therefore, they form a $\mathbb{Q}$-basis of $K$.
+        Furthermore, they are algebraic integers,
+        as we have proved.
+        Let us calculate the discriminant of this basis.
+        We will use the formula proved in class:
+        \begin{align}
+            \text{disc}(\alpha_1, \ldots, \alpha_n) = \det(\text{Tr}(\alpha_i\alpha_j)_{i,j=1}^n)
+        \end{align}
+        In this case, we have already calculated the
+        matrix corresponding to multiplication by $\alpha$ and $\theta$.
+        We can also note that $\alpha \theta = 4 \in \mathbb{Q}$ ,
+        so it has trace $3 \times 4 = 12$ (similarly, $\text{Tr}(1)=3$), and that
+
+        \[T_{\theta^2}^B = M^2 =
+            \begin{pmatrix}
+                0 & 8 & 8 \\
+                0 & 2 & 10 \\
+                1 & 1 & 3
+            \end{pmatrix}\]
+        and
+        \[T_{\alpha^2}^B = N^2 =
+            \begin{pmatrix}
+                -1 & 4 & 16 \\
+                \frac{5}{2} & -2 & 0 \\
+                -\frac{1}{2} & 2 & 0
+            \end{pmatrix}\]
+    Therefore, we can calculate the discriminant as follows:
+        \[\begin{vmatrix}
+            \text{Tr}(1) & \text{Tr}(\theta) & \text{Tr}(\alpha) \\
+            \text{Tr}(\theta) & \text{Tr}(\theta^2) & \text{Tr}(\theta\alpha) \\
+            \text{Tr}(\alpha) & \text{Tr}(\theta\alpha) & \text{Tr}(\alpha^2)
+        \end{vmatrix}=
+        \begin{vmatrix}
+            3 & 1 & -1 \\
+            1 & 5 & 12 \\
+            -1 & 12 & -3
+        \end{vmatrix} = -503
+        \]
+        Since the discriminant is a square-free integer (in fact, it is prime)
+        it has to be $\text{disc}(K)$ (by theory, it has to be a square times $\text{disc}(K)$).
+        Therefore, $\{1, \theta, \alpha\}$ is an integral basis of $\mathcal{O}_K$.
+
+    \end{proof}
+
+    \begin{claim}
+        K is not monogenic.
+    \end{claim}
+    \begin{proof}
+        Suppose that $\{1, \beta, \beta^2\}$ is an integral basis of $\mathcal{O}_K$.
+        Let $\beta=a+b\theta+c\alpha$, with $a,b,c \in \mathbb{Z}$.
+        We may assume a = 0, since otherwise we can replace $\beta$ by $\beta - a$
+        and we still have an integral basis.
+        Then, $\beta^2 = b^2\theta^2+2bc\alpha\theta+c^2\alpha^2$.
+        In our basis, the first column of the matrix $T_{\alpha^2}^B$ tells us that
+        $\alpha^2 = (-1, \frac{5}{2}, \frac{-1}{2})^T$, and similarly
+        $\alpha = (-1, -\frac{1}{2}, \frac{1}{2})^T$.
+        Also remember that $\alpha\theta=4$.
+        All in all,
+        \[
+            \beta = (-c,b-\frac{c}{2},\frac{c}{2})^T \\
+            \beta^2 = (8bc-c^2, \frac{5c^2}{2}, b^2 - \frac{c^2}{2})^T
+
+        \]
+        So the change of basis matrix from $\{1, \beta, \beta^2\}$ to $\{1, \theta, \alpha\}$  is
+
+        \[
+            \begin{pmatrix}
+                1 & 0 & -1 \\
+                0 & 1 & -\frac{1}{2} \\
+                0 & 0 & \frac{1}{2}
+            \end{pmatrix}^{-1}
+            \begin{pmatrix}
+                1 & -c& 8bc-c^2 \\
+                0 & b-\frac{c}{2} & \frac{5c^2}{2} \\
+                0 & \frac{c}{2} & b^2 - \frac{c^2}{2}
+            \end{pmatrix}
+
+        \]
+        with determinant $2 \times \frac{1}{4} (4b^3- 2bc^2 - 2b^2c -4c^3)
+        = 2b^3-bc^2-b^2c-2c^3$.
+        This is always even, so it cannot be $\pm 1$.
+    \end{proof}
+
+
+\end{document}
