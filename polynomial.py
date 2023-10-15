@@ -63,7 +63,7 @@ class Polynomial:
 
         return out
 
-    def __init__(self, coefficients: Any, characteristic: int = 5):
+    def __init__(self, coefficients: Any, characteristic: int):
         self.char = characteristic
         if isinstance(coefficients, np.ndarray):
             assert len(coefficients.shape) == 1
@@ -117,7 +117,7 @@ class Polynomial:
         degree = max(i for i, c in enumerate(result) if c != 0)
         result = result[:degree + 1]
 
-        return Polynomial(result)
+        return Polynomial(result, self.char)
 
     def __mul__(self, other):
 
@@ -132,7 +132,7 @@ class Polynomial:
                 result[i + j] += c1 * c2 % self.char
                 result[i + j] %= self.char
 
-        return Polynomial(result)
+        return Polynomial(result, self.char)
 
     def __str__(self):
         s = ''
@@ -149,7 +149,7 @@ class Polynomial:
 
 
 if __name__ == '__main__':
-    char = 5
+    char = 41
     p1 = Polynomial('2x^3 + 3x^2 + 7x + x^2 - 1', char)
     print('p1:', p1)
     p2 = Polynomial('3x^3 + 4x+ x^2 + 34', char)
@@ -162,12 +162,12 @@ if __name__ == '__main__':
     print('p1+p2:', p4)
     print()
 
-    for i in range(5):
+    for i in range(41):
         print(f'x = {i}')
         print(f'{p1(i)} * {p2(i)} == {p3(i)} mod {char}')
-        assert (p3(i) == (p1(i) * p2(i)) % 5)
+        assert (p3(i) == (p1(i) * p2(i)) % char)
         print(f'{p1(i)} + {p2(i)} == {p4(i)} mod {char}')
-        assert (p4(i) == (p1(i) + p2(i)) % 5)
+        assert (p4(i) == (p1(i) + p2(i)) % char)
 
         print()
     print('All tests passed!')
