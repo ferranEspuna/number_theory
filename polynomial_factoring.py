@@ -108,7 +108,12 @@ def factor_into_irreducibles(f: Polynomial, verbose=False):
 
 
 if __name__ == '__main__':
-    f_ = Polynomial('x^125-x', 5)
+
+    char = input('Enter a prime number: ')
+    char = int(char)
+    f_ = input('Enter a polynomial: ')
+    f_ = Polynomial(f_, char)
+
     find_nontrivial_factorization(f_, verbose=True)
     factor_into_irreducibles(f_, verbose=True)
 
