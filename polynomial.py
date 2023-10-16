@@ -25,18 +25,18 @@ class Polynomial:
 
         coef = coef.strip()
         final_coef = 1
-        for i in range(len(coef), 0, -1):
+        for j in range(len(coef), 0, -1):
             try:
-                final_coef = int(coef[:i])
+                final_coef = int(coef[:j])
                 break
             except:
                 pass
 
         exp = exp.strip()
         final_exp = 1
-        for i in range(len(exp)):
+        for j in range(len(exp)):
             try:
-                final_exp = int(exp[i:])
+                final_exp = int(exp[j:])
                 break
             except:
                 pass
@@ -63,14 +63,19 @@ class Polynomial:
 
         return out
 
-    def __init__(self, coefficients: Any, characteristic: int):
+    def reduce(self):
+
+        i = len(self.coefficients) - 1
+        while i >= 0 and self.coefficients[i] == 0:
+            i -= 1
+        self.coefficients = self.coefficients[:i + 1]
+
+    def __init__(self, coefficients: Any, characteristic: int) -> object:
         self.char = characteristic
         if isinstance(coefficients, np.ndarray):
             assert len(coefficients.shape) == 1
-            assert coefficients.dtype == int, 'Polynomial coefficients must be integers'
             self.coefficients = list(coefficients)
         elif isinstance(coefficients, List):
-            assert all([isinstance(c, int) for c in coefficients]), 'Polynomial coefficients must be integers'
             self.coefficients = coefficients
         elif isinstance(coefficients, str):
             terms_prev = coefficients.split('+')
@@ -87,6 +92,27 @@ class Polynomial:
             for coef, exp in terms:
                 self.coefficients[exp] += coef
                 self.coefficients[exp] %= self.char
+
+            self.reduce()
+
+    def copy(self):
+        return Polynomial(copy(self.coefficients), self.char)
+
+    def degree(self):
+        self.reduce()
+        return len(self.coefficients) - 1
+
+    def lead(self):
+        self.reduce()
+        return 0 if len(self.coefficients) == 0 else self.coefficients[-1]
+
+    def __eq__(self, other):
+        if isinstance(other, int):
+            other = Polynomial([other], self.char)
+
+        self.reduce()
+        other.reduce()
+        return self.coefficients == other.coefficients and self.char == other.char
 
     def __call__(self, x):
         y = 0
@@ -114,10 +140,15 @@ class Polynomial:
             result[i] += c
             result[i] %= self.char
 
-        degree = max(i for i, c in enumerate(result) if c != 0)
-        result = result[:degree + 1]
+        p = Polynomial(result, self.char)
+        p.reduce()
+        return p
 
-        return Polynomial(result, self.char)
+    def __neg__(self):
+        return Polynomial([0 if c == 0 else self.char - c for c in self.coefficients], self.char)
+
+    def __sub__(self, other):
+        return self + (-other)
 
     def __mul__(self, other):
 
@@ -126,6 +157,7 @@ class Polynomial:
 
         assert self.char == other.char, 'Polynomials must have the same characteristic'
 
+        # todo maybe use fft to speed up
         result = [0] * (len(self.coefficients) + len(other.coefficients) - 1)
         for i, c1 in enumerate(self.coefficients):
             for j, c2 in enumerate(other.coefficients):
@@ -133,6 +165,81 @@ class Polynomial:
                 result[i + j] %= self.char
 
         return Polynomial(result, self.char)
+
+    def __divmod__(self, other):
+        if not isinstance(other, Polynomial):
+            other = Polynomial([other], self.char)
+        assert self.char == other.char, 'Polynomials must have the same characteristic'
+
+        d = other.degree()
+
+        if self.degree() < d:
+            return Polynomial([0], self.char), self
+
+        if other == 0:
+            raise ZeroDivisionError('Polynomial division by zero')
+
+        q = Polynomial([0], self.char)
+        r = self.copy()
+
+        l = other.lead()
+        l_inv = pow(int(l), -1, self.char)
+
+        while True:
+
+            rd = r.degree()
+
+            if rd < d:
+                break
+
+            c = (r.lead() * l_inv) % self.char
+            e = rd - d
+            t = Polynomial([0] * e + [c], self.char)
+            q += t
+            r -= t * other
+
+        return q, r
+
+    def __mod__(self, other):
+        return divmod(self, other)[1]
+
+    def __floordiv__(self, other):
+        return divmod(self, other)[0]
+
+    def __pow__(self, power, modulo=None):
+        if modulo is not None:
+            raise NotImplementedError('Modular exponentiation not implemented')
+        if power == 0:
+            return Polynomial([1], self.char)
+        if power == 1:
+            return self.copy()
+
+        q, r = divmod(power, self.char)
+        if q > 0:
+            ez_coef = [0] * (q * self.degree() * self.char + 1)
+            for i, c in enumerate(self.coefficients):
+                ez_coef[q * i * self.char] = c
+
+            ez = Polynomial(ez_coef, self.char)
+            return ez * pow(self, r)
+
+        if power == 2:
+            return self * self
+
+        if power % 2 == 0:
+            return pow(pow(self, power // 2), 2)
+        else:
+            return self * pow(self, power - 1)
+
+    def differentiate(self):
+        result = [0] * self.degree()
+        for i, c in enumerate(self.coefficients[1:]):
+            result[i] = ((i + 1) * c) % self.char
+
+        return Polynomial(result, self.char)
+
+    def monic(self):
+        return self // self.lead()
 
     def __str__(self):
         s = ''
@@ -148,8 +255,15 @@ class Polynomial:
         return s[:-3]
 
 
+def gcd(a: Polynomial, b: Polynomial) -> Polynomial:
+    assert a.char == b.char, 'Polynomials must have the same characteristic'
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+
 if __name__ == '__main__':
-    char = 41
+    char = 7
     p1 = Polynomial('2x^3 + 3x^2 + 7x + x^2 - 1', char)
     print('p1:', p1)
     p2 = Polynomial('3x^3 + 4x+ x^2 + 34', char)
@@ -162,7 +276,7 @@ if __name__ == '__main__':
     print('p1+p2:', p4)
     print()
 
-    for i in range(41):
+    for i in range(char):
         print(f'x = {i}')
         print(f'{p1(i)} * {p2(i)} == {p3(i)} mod {char}')
         assert (p3(i) == (p1(i) * p2(i)) % char)
@@ -171,4 +285,3 @@ if __name__ == '__main__':
 
         print()
     print('All tests passed!')
-
