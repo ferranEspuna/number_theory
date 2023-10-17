@@ -44,10 +44,14 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
 
     coef = find_some_non_trivial_in_reduced(M, c)
 
+
     assert coef is not None, 'Something went wrong. No non-trivial solution found.'
 
     h = Polynomial(coef, c)
     assert h.degree() > 0, 'Something went wrong. No non-trivial solution found.'
+
+    must_be_zero = ((h ** c) - h) % f
+    assert must_be_zero == 0, 'This is not an actual solution!'
 
     if verbose:
         print(f'A non-trivial solution is h(x) = {h}\n')
@@ -71,9 +75,7 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
 
             return f1, f2
 
-    raise Exception('Something went wrong. No non-trivial factorization found.')
-
-
+    
 def factor_into_irreducibles(f: Polynomial, verbose=False):
 
     if verbose:
@@ -81,12 +83,12 @@ def factor_into_irreducibles(f: Polynomial, verbose=False):
 
     factors = []
 
-    def factor_into_irreducibles_rec(f_: Polynomial):
+    def factor_into_irreducibles_rec(f_: Polynomial, verbose=False):
         if f_.degree() == 1:
             factors.append(f_)
             return
 
-        partial_frac = find_nontrivial_factorization(f_)
+        partial_frac = find_nontrivial_factorization(f_, verbose=verbose)
 
         if partial_frac is None:
             factors.append(f_)
@@ -94,15 +96,16 @@ def factor_into_irreducibles(f: Polynomial, verbose=False):
         else:
             f1, f2 = partial_frac
 
-        factor_into_irreducibles_rec(f1)
-        factor_into_irreducibles_rec(f2)
+        factor_into_irreducibles_rec(f1, verbose=False)
+        factor_into_irreducibles_rec(f2, verbose=False)
 
-    factor_into_irreducibles_rec(f)
+    factor_into_irreducibles_rec(f, verbose=verbose)
+    factors.sort(reverse=True)
 
     if verbose:
 
-        print(f'f(x) = {f} factors into irreducibles as'
-              f'\n\tf(x) = {" * ".join([f"({str(f)})" for f in factors])}\n')
+        print(f'f(x) = {f} factors into irreducibles as',
+              '\nf(x) = \n', " *\n".join([f"\t({str(f)})" for f in factors]))
 
     return factors
 
@@ -111,9 +114,8 @@ if __name__ == '__main__':
 
     char = input('Enter a prime number: ')
     char = int(char)
-    f_ = input('Enter a polynomial: ')
-    f_ = Polynomial(f_, char)
+    _f = input('Enter a polynomial: ')
+    _f = Polynomial(_f, char)
 
-    find_nontrivial_factorization(f_, verbose=True)
-    factor_into_irreducibles(f_, verbose=True)
+    factor_into_irreducibles(_f, verbose=True)
 

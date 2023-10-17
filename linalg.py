@@ -66,9 +66,12 @@ def find_some_non_trivial_in_reduced(matrix, char):
     while i >= 0:
 
         t = find_first_nonzero(matrix[i])
-        if i == 0 and not found:
+        
+        if i == 0 and not found and t is None:
             t = (0, 1)
+
         if t:
+
             new_j, val = t
             jump = j - new_j
             assert jump > 0, 'Matrix is not in reduced form!'

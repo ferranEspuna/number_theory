@@ -113,6 +113,28 @@ class Polynomial:
         self.reduce()
         other.reduce()
         return self.coefficients == other.coefficients and self.char == other.char
+    
+    def __gt__(self, other):
+
+        if not isinstance(other, Polynomial):
+            other = Polynomial([other], self.char)
+
+        do = other.degree()
+        ds = self.degree()
+        if do > ds:
+            return False
+        if do < ds:
+            return True
+        
+        for cs, co in zip(self.coefficients[::-1], other.coefficients[::-1]):
+            if cs > co:
+                return True
+            if cs < co:
+                return False
+            
+        return False
+
+
 
     def __call__(self, x):
         y = 0
