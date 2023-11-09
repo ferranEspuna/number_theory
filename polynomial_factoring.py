@@ -2,6 +2,7 @@ import numpy as np
 from polynomial import Polynomial, gcd
 from linalg import reduce, find_some_non_trivial_in_reduced
 
+
 def build_T_minus_I_matrix(p: Polynomial):
     assert gcd(p, p.differentiate()).degree() == 0, 'Polynomial must be separable!'
     c = p.char
@@ -75,7 +76,7 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
 
             return f1, f2
 
-    
+
 def factor_into_irreducibles(f: Polynomial, verbose=False):
 
     if verbose:
@@ -111,7 +112,6 @@ def factor_into_irreducibles(f: Polynomial, verbose=False):
 
 
 if __name__ == '__main__':
-
     char = input('Enter a prime number: ')
     char = int(char)
     _f = input('Enter a polynomial: ')
