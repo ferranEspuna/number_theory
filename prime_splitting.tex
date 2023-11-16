@@ -131,9 +131,10 @@
         The same proposition, but without using Claim~\ref{claim:fancy_isomorphishm}.
         \begin{proof}
             We will examine each of the six cases separately, and give appropriate factorizations of $p\mathcal{O}_K$.
+            We will start by the inert cases:
             \begin{itemize}
 
-                \item $p$ odd, $\left( \frac{m}{p} \right) = 1$: We just need to show that $p \mathcal{O}_K$ is prime in $\mathcal{O}_K = \mathbb{Z}\left[\sqrt {m}\right]$.
+                \item $p$ odd, $\left( \frac{m}{p} \right) = -1$: We just need to show that $p \mathcal{O}_K$ is prime in $\mathcal{O}_K = \mathbb{Z}\left[\sqrt {m}\right]$.
                 Indeed, if \[p\left(a+b\sqrt {m}\right) = \left(c+d\sqrt{m}\right)\left(e+f\sqrt{m}\right) = (ec + mfd) + (ed + fc)\sqrt{m}\]
                 then $p \mid ec + mfd$ and $p \mid ed + fc$ so
                 \[p \mid d(ec+mdf) - c(ed+fc) = mfd^2 - fc^2 = f(md^2 - c^2)\]
@@ -141,16 +142,28 @@
                 The first case implies $p \mid ec$ and $p \mid ed$, so either $p \mid e$,
                 in which case p \mid ($e + f \sqrt {m}$), or $p \mid c$ and $p \mid d$,
                 in which case $p \mid \left(c + d \sqrt {m}\right)$.
-                In the second case, if $p mid d$ we can play the same game as in the case $p \mid f$, because $p \nmid m$.
+                In the second case, if $p \mid d$ we can play the same game as in the case $p \mid f$, because $p \nmid m$.
                 Otherwise, working modulo $p$, let x be the inverse of $d$.
                 $0 \equiv md^2-c^2 \equiv m - x^2c^2 \equiv m - (xc)^2$ so $m$ is a square modulo $p$, a contradiction.
 
                 \item $p=2$, $m \equiv 5 \pmod 8$: We have $\mathcal{O}_K = \mathbb{Z}\left[\frac{1+\sqrt {m}}{2}\right]$.
                 We will show that $2$ is prime in $\mathcal{O}_K$.
-                Assume $2a+b + b\sqrt {m} = (c+d\frac{\sqrt {m}+1}{2})(e+f\frac{\sqrt {m}+1}{2}) \Rightarrow$
-                \[
-                    4a + 2b + 2b\sqrt {m} = (2c+d\sqrt {m}+d)(2e+f\sqrt {m}+f) = (4ce + 2ce (m+2)df) + 2(cf+de+df)\sqrt {m}
-                \]
+                Assume that
+                \begin{gather}
+                    2\left(a+b\frac{\sqrt {m}+1}{2}\right) = \left(c+d\frac{\sqrt {m}+1}{2}\right)\left(e+f\frac{\sqrt {m}+1}{2}\right) \Rightarrow \nonumber \\
+                    8a + 4b + 4b\sqrt {m} =
+                    (2c+d\sqrt {m}+d)(2e+f\sqrt {m}+f) = \nonumber \\
+                    (4ce + 2cf + 2de + (m+1)df) + 2(cf+de+df)\sqrt {m} \nonumber
+                \end{gather}
+                Because $m+1$ is even, we can divide by $2$ and get
+                \begin{align*}
+                    4a + 2b &= 2ce + cf + de + rdf \nonumber \\
+                    2b &= cf+ de + df \nonumber
+                \end{align*}
+                where $r = \frac{m+1}{2} \equiv 3 \pmod 4$.
+                From the first equation, we get that
+                Subtracting the second equation from the first, we get
+                $4a = 2ce + (r-1)df$.
             \end{itemize}
         \end{proof}
     \end{prop}
