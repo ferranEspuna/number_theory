@@ -148,24 +148,45 @@
 
                 \item $p=2$, $m \equiv 5 \pmod 8$: We have $\mathcal{O}_K = \mathbb{Z}\left[\frac{1+\sqrt {m}}{2}\right]$.
                 We will show that $2$ is prime in $\mathcal{O}_K$.
-                Assume that
+                Assume that we have a factorization:
                 \begin{gather}
-                    2\left(a+b\frac{\sqrt {m}+1}{2}\right) = \left(c+d\frac{\sqrt {m}+1}{2}\right)\left(e+f\frac{\sqrt {m}+1}{2}\right) \Rightarrow \nonumber \\
+                    2\left(a+b\frac{\sqrt {m}+1}{2}\right) = \left(c+d\frac{\sqrt {m}+1}{2}\right)\left(e+f\frac{\sqrt {m}+1}{2}\right) \Rightarrow \label{eqn:first} \\
                     8a + 4b + 4b\sqrt {m} =
                     (2c+d\sqrt {m}+d)(2e+f\sqrt {m}+f) = \nonumber \\
                     (4ce + 2cf + 2de + (m+1)df) + 2(cf+de+df)\sqrt {m} \nonumber
                 \end{gather}
                 Because $m+1$ is even, we can divide by $2$ and get
-                \begin{align*}
-                    4a + 2b &= 2ce + cf + de + rdf \nonumber \\
-                    2b &= cf+ de + df \nonumber
-                \end{align*}
+                \begin{align}
+                    4a + 2b &= 2ce + cf + de + rdf \label{eqn:second} \\
+                    2b &= cf+ de + df \label{eqn:third}
+                \end{align}
                 where $r = \frac{m+1}{2} \equiv 3 \pmod 4$.
-                 Subtracting the second equation from the first, we get
+                Subtracting~\eqref{eqn:third} from~\eqref{eqn:second}, we get
                 \begin{align*}
                     4a = 2ce + (r-1)df
                 \end{align*}
+                $r - 1 \equiv 2 \pmod 4$ so $\frac{r-1}{2}$ is odd.
+                Dividing the equation by $2$,
+                $ce$ and $df$ must have the same parity.
+                They can't be both odd, because that would imply $c, d, e, f$ odd,
+                contradicting~\eqref{eqn:third}.
+                Therefore, they are both even.
+                If both $c$ and $d$ are even, or both $e$ and $f$ are even, then
+                we have shown that $2$ divides one of the factors on the right hand side of~\eqref{eqn:first},
+                so we are done.
+                By symmetry, we may assume that $c$ and $f$ are even.
+                Looking at~\eqref{eqn:third}, we realize that now $de$ is even, so $d$ or $e$ must be even,
+                again showing that one of the factors on the right hand side of~\eqref{eqn:first} is divisible by $2$.
             \end{itemize}
+            because the extension is of degree $2$, $p\mathcal{O}_K$ must have at most two prime factors, by the same argument as before.
+            Therefore, In the cases where $p\mathcal{O}_K$ is not prime, it is enough to show that a product of two ideals
+            (the same one repeated twice, or two different ones, depending on the case)
+            contains in $p\mathcal{O}_K$:
+
+            \begin{itemize}
+                \item $p$ odd, $\left( \frac{m}{p} \right) = 0$: We have $\mathcal{O}_K = \mathbb{Z}\left[\sqrt {m}\right]$.
+            \end{itemize}
+
         \end{proof}
     \end{prop}
 \end{document}
