@@ -3,6 +3,7 @@
 
 % Preamble
 \documentclass[11pt]{article}
+\usepackage[margin=3cm]{geometry}
 
 % Packages
 \usepackage{amsmath}
@@ -178,14 +179,66 @@
                 Looking at~\eqref{eqn:third}, we realize that now $de$ is even, so $d$ or $e$ must be even,
                 again showing that one of the factors on the right hand side of~\eqref{eqn:first} is divisible by $2$.
             \end{itemize}
-            because the extension is of degree $2$, $p\mathcal{O}_K$ must have at most two prime factors, by the same argument as before.
-            Therefore, In the cases where $p\mathcal{O}_K$ is not prime, it is enough to show that a product of two ideals
-            (the same one repeated twice, or two different ones, depending on the case)
-            contains in $p\mathcal{O}_K$:
+            Because the extension is of degree $2$, $p\mathcal{O}_K$ must have at most two prime factors, by the same argument as before.
+            Therefore, In the cases where $p\mathcal{O}_K$ is not prime, it is enough to show that a product of two proper ideals
+            (the same one repeated twice, or two different ones, depending on the case)contains in $p\mathcal{O}_K$.
+            This will imply equality, and that th ideals are prime.
+
 
             \begin{itemize}
-                \item $p$ odd, $\left( \frac{m}{p} \right) = 0$: We have $\mathcal{O}_K = \mathbb{Z}\left[\sqrt {m}\right]$.
+                \item $p$ odd, $\left( \frac{m}{p} \right) = 0$: We have $\mathcal{O}_K = \mathbb{Z}\left[\sqrt {m}\right]$ and $p \mid m$.
+                we will show that $p\mathcal{O}_K = \left(p, \sqrt {m}\right)^2$.
+                Indeed, let $m = kp$, $p \nmid k$ because $m$ is square-free.
+                By the Bezout identity, there exist $a, b \in \mathbb{Z}$ such that $ap + bk = 1$ so
+                $p = p(ap+bk) = ap^2 + bm = ap^2 + b\left(\sqrt {m}\right)^2 \in \left(p, \sqrt {m}\right)^2$.
+                The ideal $\left(p, \sqrt {m}\right)$ is proper,
+                as its intersection with $\mathbb{Z}$ is $p\mathbb{Z} + m\mathbb{Z} = p\mathbb{Z}$.
+
+                \item $p=2, m \equiv 2, 3 \pmod 4$:
+                We have $\mathcal{O}_K = \mathbb{Z}\left[\sqrt {m}\right]$.
+                If $m \equiv 2 \pmod 4$, we can do exatly the same as in the previous case.
+                Let us assume that $m \equiv 3 \pmod 4$.
+                We will show that $2\mathcal{O}_K = \left(2, 1 + \sqrt {m}\right)^2$.
+                An element of this product of ideals is
+                \begin{align}
+                (1 + \sqrt {m})^2 - 2 (1+\sqrt {m}) = 1 + 2 \sqrt {m} + m - 2 - \sqrt {m} = m - 1 \equiv 2 \pmod 4 \nonumber
+                \end{align}
+                $4 = 2^2$ also belongs here, and therefore so does $2$.
+                We can see that the ideal $(2, 1 + \sqrt {m})$ is proper by trying to find $1$ as a combination of $2$ and $1 + \sqrt {m}$:
+                \begin{align*}
+                    1 = 2\left(a + b\sqrt {m}\right) + \left(1 + \sqrt {m}\right) \left(c+d\sqrt {m}\right) &= (2a + c + dm) + (2b + c + d) \sqrt {m} \Rightarrow \\
+                    2b+c+d&=0 \\
+                    2a+c+dm&=1
+                \end{align*}
+                because $m$ is odd, reducing modulo $2$, we get $c+d \equiv 0$ and $c+d \equiv 1$, a contradiction.
+                \item $p$ odd, $\left( \frac{m}{p} \right) = 1$:
+                We have $\mathcal{O}_K = \mathbb{Z}\left[\sqrt {m}\right]$ and, for some $n$, $p \mid n^2 - m$, $p \nmid n$.
+                We will show that $p\mathcal{O}_K \subset \left(p, n + \sqrt {m}\right)\left(p, n - \sqrt {m}\right)$,
+                and that the two ideals in the product are distinct (by symmetry, this will imply that they are both proper ideals).
+                For the first part, observe that $2np = p\left(n+\sqrt {m}\right) + p\left(n-\sqrt {m}\right)$
+                is in the relevant ideal product. $p\nmid 2n$ so, by the Bezout identity, there exist $a, b \in \mathbb{Z}$ such that
+                \[
+                    ap + b(2n) = 1 \Rightarrow p = a(p^2) + b(2np) \in \left(p, n + \sqrt {m}\right)\left(p, n - \sqrt {m}\right)
+                \]
+                To show that the ideals are different, without loss of generality, we will assume $n-\sqrt {m} \in \left(p, n+\sqrt {m}\right)$:
+                \begin{gather*}
+                    n-\sqrt {m} = p\left(a+b\sqrt {m}\right) + \left(n+\sqrt {m}\right)\left(c+d\sqrt {m}\right) = (ap+cn+dm) + (bp+nd+c)\sqrt {m} \Rightarrow \\
+                    bp+nd+c = -1 \\
+                    ap+cn+dm = n
+                \end{gather*}
+                Working modulo $p$, and multiplying the first equation by $n$, we get
+                \begin{align*}
+                    md + nc &\equiv -n\\
+                    cn + dm &\equiv n
+                \end{align*}
+                Subtracting the first equation from the second, we get $p \mid 2n \Rightarrow p \mid n$, against our assumptions.
+                \item $p=2$, $m \equiv 1 \pmod 8$: We have $\mathcal{O}_K = \mathbb{Z}\left[\frac{1+\sqrt {m}}{2}\right]$.
+                Similarly to the previous case,
+                We will show that
+                $2\mathcal{O}_K \subset \left(2, \frac{1 + \sqrt {m}}{2}\right)\left(2, \frac{1 - \sqrt {m}}{2}\right)$,
+                and that the two ideals in this product are distinct.
             \end{itemize}
+
 
         \end{proof}
     \end{prop}
