@@ -44,13 +44,14 @@
         Let $m$ be a square-free integer.
         Let $K=\mathbb{Q}\left(\sqrt {m}\right)$ and let $p$ be a prime number.
         Then,
-        \[
+       \[
             \mathcal{O}_K / p \mathcal{O}_K \cong
-            \left\{\begin{array}{ll}
-                \mathbb{F}_p[X]/(X^2-m),  &\text{ if }  p \text{ odd or } p = 2 \text{ and } m  \equiv 2, 3 \pmod 4 \\
-                \mathbb{F}_2[X]/(X^2+X), &\text{ if } p = 2 \text{ and } m  \equiv 1 \pmod 8 \\
-                \mathbb{F}_2[X]/(X^2+X+1), &\text{ if } p = 2 \text{ and } m  \equiv 5 \pmod 8
-                \end{array}\right\}
+            \left\{\begin{align*}
+                &\mathbb{F}_p[X]/(X^2-m),  &\text{ if }  p \text{ odd or } &p = 2 \text{ and } &m  &\equiv 2, 3 &\pmod 4 \\
+                &\mathbb{F}_2[X]/(X^2+X), &\text{ if } &p = 2 \text{ and } &m  &\equiv 1 &\pmod 8 \\
+                &\mathbb{F}_2[X]/(X^2+X+1), &\text{ if } &p = 2 \text{ and } &m  &\equiv 5 &\pmod 8
+                \end{align*}
+
         \]
         \begin{proof}
 
@@ -245,8 +246,8 @@
                 \end{gather*}
                 Equating terms and multiplying everything by $4$ we get:
                 \begin{align*}
-                    2 &= 8a + 4b + 2c + (m+1)\,d \label{eqn:two} \\
-                    -2 &= 4b + 2c + 2d \label{eqn:minus-one}\\
+                    2 &= 8a + 4b + 2c + (m+1)\,d  \\
+                    -2 &= 4b + 2c + 2d \\
                     \intertext{And subracting the two equations we obtain:}
                     4 &= 8a + (m-1)\,d
                 \end{align*}
