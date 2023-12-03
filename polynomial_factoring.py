@@ -3,13 +3,12 @@ from polynomial import Polynomial, gcd
 from linalg import reduce, find_some_non_trivial_in_reduced
 
 
-def build_T_minus_I_matrix(p: Polynomial):
+def build_t_minus_i_matrix(p: Polynomial):
     assert gcd(p, p.differentiate()).degree() == 0, 'Polynomial must be separable!'
     c = p.char
     n = p.degree()
-
-    powers = [(Polynomial([0, 1], c) ** (c * i) -
-               Polynomial([0, 1], c) ** i
+    powers = [(pow(Polynomial([0, 1], c), (c * i), p) -
+               pow(Polynomial([0, 1], c), i, p)
                ) % p
               for i in range(n)]
 
@@ -27,7 +26,7 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
     if verbose:
         print(f'Checking irreducibility of f(x) = {f} over F_{c}...\n')
 
-    M = build_T_minus_I_matrix(f)
+    M = build_t_minus_i_matrix(f)
 
     if verbose:
         print(f'the relevant matrix is:\n{M}\n')
@@ -44,7 +43,6 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
         return None
 
     coef = find_some_non_trivial_in_reduced(M, c)
-
 
     assert coef is not None, 'Something went wrong. No non-trivial solution found.'
 
@@ -77,8 +75,23 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
             return f1, f2
 
 
-def factor_into_irreducibles(f: Polynomial, verbose=False):
+def find_number_of_factors(f: Polynomial, verbose=False):
+    c = f.char
 
+    if verbose:
+        print(f'Checking irreducibility of f(x) = {f} over F_{c}...\n')
+
+    M = build_t_minus_i_matrix(f)
+
+    if verbose:
+        print(f'the relevant matrix is:\n{M}\n')
+
+    rank = reduce(M, c)
+
+    return rank
+
+
+def factor_into_irreducibles(f: Polynomial, verbose=False):
     if verbose:
         print(f'\nFactoring f(x) = {f} into irreducibles over F_{f.char}...')
 
@@ -104,7 +117,6 @@ def factor_into_irreducibles(f: Polynomial, verbose=False):
     factors.sort(reverse=True)
 
     if verbose:
-
         print(f'f(x) = {f} factors into irreducibles as',
               '\nf(x) = \n', " *\n".join([f"\t({str(f)})" for f in factors]))
 
@@ -118,4 +130,3 @@ if __name__ == '__main__':
     _f = Polynomial(_f, char)
 
     factor_into_irreducibles(_f, verbose=True)
-

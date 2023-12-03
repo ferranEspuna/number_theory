@@ -230,28 +230,30 @@ class Polynomial:
 
     def __pow__(self, power, modulo=None):
         if modulo is not None:
-            raise NotImplementedError('Modular exponentiation not implemented')
+            assert isinstance(modulo, Polynomial)
+            assert self.char == modulo.char, 'Polynomials must have the same characteristic'
+
         if power == 0:
-            return Polynomial([1], self.char)
-        if power == 1:
-            return self.copy()
-
-        q, r = divmod(power, self.char)
-        if q > 0:
-            ez_coef = [0] * (q * self.degree() * self.char + 1)
-            for i, c in enumerate(self.coefficients):
-                ez_coef[q * i * self.char] = c
-
-            ez = Polynomial(ez_coef, self.char)
-            return ez * pow(self, r)
-
-        if power == 2:
-            return self * self
-
-        if power % 2 == 0:
-            return pow(pow(self, power // 2), 2)
+            pol = Polynomial([1], self.char)
+        elif power == 1:
+            pol = self.copy()
+            return pol
+        elif power == 2:
+            if modulo is not None:
+                pol = self % modulo
+            else:
+                pol = self
+            pol *= pol
         else:
-            return self * pow(self, power - 1)
+            if power % 2 == 0:
+                pol = pow(pow(self, power // 2, modulo), 2, modulo)
+            else:
+                pol = self * pow(self, power - 1, modulo)
+
+        if modulo is not None:
+            pol %= modulo
+
+        return pol
 
     def differentiate(self):
         result = [0] * self.degree()
