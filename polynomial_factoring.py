@@ -20,7 +20,42 @@ def build_t_minus_i_matrix(p: Polynomial):
     return matrix
 
 
-def find_nontrivial_factorization(f: Polynomial, verbose=False):
+def find_splitting_degree(f: Polynomial):
+    print(f)
+
+    if f.degree() in [1, 3]:
+        return 1
+
+    if f.degree() == 2:
+        if is_irreducible(f):
+            return 2
+        else:
+            return 1
+
+    if f.degree() == 5:
+        if is_irreducible(f):
+            return 5
+        else:
+            return 1
+
+    if f.degree() == 4:
+        g, h = find_nontrivial_factorization(f)
+        return find_splitting_degree(min(g, h))
+
+    assert f.degree() == 10
+
+    fact = find_nontrivial_factorization(f)
+    if fact is None:
+        return f.degree()
+
+    print('escomofuak')
+
+    g, h = fact
+
+    return find_splitting_degree(min(g, h))
+
+
+def find_nontrivial_factorization(f: Polynomial, verbose=False, check=True):
     c = f.char
 
     if verbose:
@@ -44,13 +79,15 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
 
     coef = find_some_non_trivial_in_reduced(M, c)
 
-    assert coef is not None, 'Something went wrong. No non-trivial solution found.'
-
     h = Polynomial(coef, c)
-    assert h.degree() > 0, 'Something went wrong. No non-trivial solution found.'
 
-    must_be_zero = ((h ** c) - h) % f
-    assert must_be_zero == 0, 'This is not an actual solution!'
+    if check:
+        assert coef is not None, 'Something went wrong. No non-trivial solution found.'
+
+        assert h.degree() > 0, 'Something went wrong. No non-trivial solution found.'
+
+        must_be_zero = (pow(h, c, f) - h) % f
+        assert must_be_zero == 0, 'This is not an actual solution!'
 
     if verbose:
         print(f'A non-trivial solution is h(x) = {h}\n')
@@ -66,8 +103,9 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
             if verbose:
                 print(f'And f2 = f / f1 = {f2}')
 
-            assert f1.degree() > 0 and f2.degree() > 0
-            assert f1 * f2 == f
+            if check:
+                assert f1.degree() > 0 and f2.degree() > 0
+                assert f1 * f2 == f
 
             if verbose:
                 print(f'Indeed, f1 * f2 = ({f1}) * ({f2}) = {f} = f')
@@ -75,20 +113,10 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False):
             return f1, f2
 
 
-def find_number_of_factors(f: Polynomial, verbose=False):
-    c = f.char
-
-    if verbose:
-        print(f'Checking irreducibility of f(x) = {f} over F_{c}...\n')
-
+def is_irreducible(f: Polynomial):
     M = build_t_minus_i_matrix(f)
-
-    if verbose:
-        print(f'the relevant matrix is:\n{M}\n')
-
-    rank = reduce(M, c)
-
-    return rank
+    rank = reduce(M, f.char)
+    return rank == M.shape[0] - 1
 
 
 def factor_into_irreducibles(f: Polynomial, verbose=False):
@@ -121,6 +149,17 @@ def factor_into_irreducibles(f: Polynomial, verbose=False):
               '\nf(x) = \n', " *\n".join([f"\t({str(f)})" for f in factors]))
 
     return factors
+
+
+def find_one_irreducible(f: Polynomial):
+    partial_frac = find_nontrivial_factorization(f, verbose=False, check=False)
+
+    if partial_frac is None:
+        return f
+
+    f1, f2 = partial_frac
+
+    return find_one_irreducible(min(f1, f2))
 
 
 if __name__ == '__main__':
