@@ -1,0 +1,128 @@
+%! Author = ferran
+%! Date = 14/10/23
+
+% Preamble
+\documentclass[11pt]{article}
+\usepackage[margin=3cm]{geometry}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+% Packages
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{tikz-cd}
+\usepackage{wasysym}
+\usepackage{nicefrac}
+\usepackage{color}
+\usepackage{stmaryrd}
+
+
+\title{Another Example by Dedekind}
+\author{Ferran Espuña Bertomeu}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+
+\theoremstyle{definition}
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{rk}[theorem]{Remark}
+
+
+
+% Document
+\begin{document}
+
+    \maketitle
+
+    \begin{claim}
+        $f(X)=X^3-X+1$ is irreducible over $\mathbb{Q}$.
+        \begin{proof}
+            If it were reducible, it would have a root in $\mathbb{Q}$.
+            By the rational root theorem, the only possible rational roots of  $f$ are $\pm 1$.
+            None of these are roots of $f$.
+        \end{proof}
+    \end{claim}
+
+    \begin{claim}
+        Let $\theta$ be a root of $f$.
+        Consider the degree 3 extension $K = \mathbb{Q}(\theta)$.
+        Then $23 \mathcal{O}_K = \mathfrak{p}_1^2 \mathfrak{p}_2$.
+        In particular, $K\mid\mathbb{Q}$ is not Galois.
+        \begin{proof}
+            We will use the Kummer-Dedekind theorem.
+            The polynomial $f$ is irreducible over $\mathbb{Q}$,
+            and it has exactly two roots modulo $23$ (namely, $20$ and $13$).
+            Therefore, one of the roots is double, and the other one is simple.
+            This means that the polynomial splits as a square of a prime times a prime,
+            and the result follows.
+            The extension is not Galois because if it were all exponents in the decomposition would coincide.
+        \end{proof}
+    \end{claim}
+
+    \begin{rk}
+        More precisely, the $f(X) = (X+10)^2(X+3)$
+        so
+        $\mathfrak{p}_1 = \left<  23, \theta+10 \right>_{\mathcal{O}_K}$
+        and
+        $\mathfrak{p}_2 = \left<  23, \theta+3 \right>_{\mathcal{O}_K}$.
+    \end{rk}
+
+    \begin{claim}
+        The Galois closure of $K\mid\mathbb{Q}$ is $N = KL$,
+        where $L = \mathbb{Q}\left(\sqrt{-23}\right)$.
+        \begin{proof}
+
+            $N$ must be the splitting field of $f$ over $\mathbb{Q}$,
+            which we can take to contain $K$ as it is generated over $\mathbb{Q}$ by one of the roots of $f$.
+            Now, because we know $N \neq K$, we must have $[N:K] = 2 = \deg f/(X - \theta)$.
+            Therefore, $[N:\mathbb{Q}] = 6$ so we only need to prove that $\sqrt {-23} \in N$.
+            Using Viète's formulas, we can find relations between $\theta$ and the other roots of $f$ (say, $\alpha_1$ and $\alpha_2$):
+            \begin{itemize}
+                \item The degree 0 coefficient of $f$ is $1 = - \theta \alpha_1 \alpha_2$.
+                \item The degree 2 coefficient of $f$ is $0 = - (\theta + \alpha_1 + \alpha_2$).
+            \end{itemize}
+            Now, note that $\alpha_1 \alpha_2 = -\frac{1}{\theta} = \theta^2 - 1$ (this is easy to check from the equation of $f$).
+            Additionally, $\alpha_1 + \alpha_2 = -\theta$.
+            With this information, and reducing any polynomials in $\theta$ modulo $f$ when needed,
+            we can compute the discriminant of $f$:
+
+            \begin{align*}
+                \Delta(f) &= [(\theta-\alpha_1) (\theta-\alpha_2) (\alpha_1 - \alpha_2)]^2 \\
+                &= [\theta^2 - (\alpha_1 + \alpha_2) \theta + \alpha_1 \alpha_2]^2[(\alpha_1 + \alpha_2)^2 - 4 \alpha_1 \alpha_2] \\
+                &= [3\theta^2-1]^2[4-3\theta^2] = -23
+            \end{align*}
+
+            So $-23$ is a square in $N$ and we are done.
+        \end{proof}
+        
+    \end{claim}
+
+    \begin{claim}
+        $N \mid L$ is unramified.
+        \begin{proof}
+
+            Let's first calculate the discriminant of $L\mid K$:
+            %Por favor que de 23 o me pego un tiro
+            %...
+            this means that if a prime $\mathfrak{q}$ ramifies in $L\mid K$,
+            then $\mathfrak{q} \mid 23 \mathcal{O}_L$.
+            But since $N \mid L$ is Galois, the ramification index of
+            $\mathfrak{q}$ in $L\mid K$ must divide $[L:K] = [\mathbb{Q} : N] / [N : K] = 3$, so it must be 3.
+            Therefore, ramification index of $23$ in $N\mid \mathbb{Q}$ is a multiple of 3
+            (any factor of $\mathfrak{q}$ in the factorization of $23 \mathcal{O}_L$ would be raised to a power multiple of 3).
+            However, we have seen that a square ($\mathfrak{p}_1^2$) divides $23 \mathcal{O}_N$,
+            so the ramification index of $23$ in $N\mid \mathbb{Q}$ must be exactly 6, so $23\mathcal{O}_N = \mathfrak{r}^6$.
+            This is incompatible with the fact that $23 \mathcal{O}_K = \mathfrak{p}_1^2 \mathfrak{p}_2$:
+            If two copies of $\mathfrak{r}$ are in $\mathfrak{p}_1^2$, then $\mathfrak{p_2}=\mathfrak{p}_1^4$,
+            while if four copies of $\mathfrak{r}$ are in $\mathfrak{p}_1^2$, then $\mathfrak{p_2}=\mathfrak{p}_1$.
+
+        \end{proof}
+    \end{claim}
+
+\end{document}
