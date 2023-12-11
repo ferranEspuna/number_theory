@@ -34,7 +34,6 @@ def reduce(matrix, char):
                 matrix[i] = (matrix[i] * inv) % char
                 return i + 1
 
-
         j, k, val = best_other_nonzero
         if first_own_nonzero is None or k < first_own_nonzero[0]:
             matrix[[i, j]] = matrix[[j, i]]
