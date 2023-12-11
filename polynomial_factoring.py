@@ -39,7 +39,7 @@ def find_splitting_degree(f: Polynomial):
             return 1
 
     if f.degree() == 4:
-        g, h = find_nontrivial_factorization(f)
+        g, h = find_nontrivial_factorization(f, verbose=False, check=False)
         return find_splitting_degree(min(g, h))
 
     assert f.degree() == 10
@@ -51,6 +51,7 @@ def find_splitting_degree(f: Polynomial):
     print('escomofuak')
 
     g, h = fact
+    #print(f'found factorization: {g}, {h}')
 
     return find_splitting_degree(min(g, h))
 
