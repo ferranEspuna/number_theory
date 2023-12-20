@@ -65,7 +65,7 @@ def find_some_non_trivial_in_reduced(matrix, char):
     while i >= 0:
 
         t = find_first_nonzero(matrix[i])
-        
+
         if i == 0 and not found and t is None:
             t = (0, 1)
 
@@ -85,8 +85,8 @@ def find_some_non_trivial_in_reduced(matrix, char):
             else:
 
                 if jump > 1:
-                    candidate[j+1] = 1
-                    candidate[j] = (-matrix[i, j+1]) % char
+                    candidate[j + 1] = 1
+                    candidate[j] = (-matrix[i, j + 1]) % char
                     found = True
 
         i -= 1
@@ -95,3 +95,22 @@ def find_some_non_trivial_in_reduced(matrix, char):
         return None
 
     return candidate
+
+
+def find_faster(matrix, char):
+
+    i = 0
+    while matrix[i, i+1] != 0:
+        i += 1
+
+    lvec = i+2
+    sol = np.zeros(lvec, dtype=int)
+    sol[i+1] = 1
+
+    while i > 0:
+        i -= 1
+
+        res = np.dot(matrix[i, :lvec], sol) % char
+        sol[i+1] = (-res) % char
+
+    return sol

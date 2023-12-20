@@ -1,6 +1,6 @@
 import numpy as np
 from polynomial import Polynomial, gcd
-from linalg import reduce, find_some_non_trivial_in_reduced
+from linalg import reduce, find_some_non_trivial_in_reduced, find_faster
 
 
 def build_t_minus_i_matrix(p: Polynomial):
@@ -21,8 +21,6 @@ def build_t_minus_i_matrix(p: Polynomial):
 
 
 def find_splitting_degree(f: Polynomial):
-    print(f)
-
     if f.degree() in [1, 3]:
         return 1
 
@@ -44,14 +42,10 @@ def find_splitting_degree(f: Polynomial):
 
     assert f.degree() == 10
 
-    fact = find_nontrivial_factorization(f)
+    fact = find_nontrivial_factorization(f, verbose=False, check=False)
     if fact is None:
         return f.degree()
-
-    print('escomofuak')
-
     g, h = fact
-    #print(f'found factorization: {g}, {h}')
 
     return find_splitting_degree(min(g, h))
 
@@ -78,7 +72,7 @@ def find_nontrivial_factorization(f: Polynomial, verbose=False, check=True):
             print('The matrix is (almost) full rank, so the polynomial is irreducible.\n')
         return None
 
-    coef = find_some_non_trivial_in_reduced(M, c)
+    coef = find_faster(M, c) #find_some_non_trivial_in_reduced(M, c)
 
     h = Polynomial(coef, c)
 

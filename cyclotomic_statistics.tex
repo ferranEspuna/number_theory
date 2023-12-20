@@ -43,7 +43,7 @@
     \noindent In this part I will explain the experiments I have done on the splitting of cyclotomic polynomials in fields of prime order.
     On the first experiment, I have computed how the polynomial $\phi_{11}(X) = X^{10} + X^9 + \cdots + X + 1$ splits over $\mathbb{F}_p$,
     for $p$ a prime number.
-    I have done this for all primes $p$ less than a million.
+    I have done this for all primes $p$ less than $200,000$ (excluding $11$).
     The goal of this experiment is to see if there is a pattern on how many irreducible factors $\phi_{11}$ has
     over $\mathbb{F}_p$.
     Excluding the prime $p = 11$, the polynomial $\phi_{11}$ is separable over $\mathbb{F}_p$ for all primes $p$, so the
@@ -60,21 +60,25 @@
 
     \noindent Note that the last case corresponds to the case where $\mathbb{F}_p(\zeta_{11}) = \mathbb{F}_p$, that is,
     $\mathbb{F}_p$ contains all the $11$-th roots of unity.
-    I distinguish between the cases using the Berlekamp algorithm: the number of irreducible factors is equal to the
-    dimension of the kernel of the relevant matrix, that is, its corank.
-    Initially, I wanted to just know how often each case happens, so I tallied the number of times each case happened in the following table:
+    I distinguish between the cases using the Berlekamp algorithm:
+    Every time I find a nontrivial factorization of $\phi_{11}$, I run the algorithm again on the smallest of the two factors,
+    until I get a polynomial whose number of irreducible factors I can deduce (an irreducible one, or one of degree not dividing $10$,
+    in which case I deduce $\phi_{11}$ splits into degree 1 factors).
+
+
+    \noindent Initially, I wanted to just know how often each case happens, so I tallied the number of times each case happened in the following table:
 
     \begin{center}
         \begin{tabular}{|c|c|c|c|c|}
             \hline
             Number of irreducible factors mod p & 1 & 2 & 5 & 10 \\
             \hline
-            Number of primes p & 31466 & 31334 & 7858 & 7839 \\
+            Number of primes p & 7213 & 7178 & 1798 & 1794 \\
             \hline
         \end{tabular}
     \end{center}
 
-    \noindent There are a total of $31466 + 31334 + 7858 + 7839 = 78497$ primes less than a million (excluding $11$). This means that,
+    \noindent There are a total of $17983$ primes less than $200,000$ (excluding $11$). This means that,
     for a random prime $p$ less than a million, the probability of each case happening is approximately:
 
     \begin{center}
@@ -109,6 +113,15 @@
     Of course, this generalizes to any $q$-th cyclotomic polynomial for any prime $q$.
     As for the reason why the fractions coincide with the fraction of remainders modulo $11$,
     this is explained by Dirichlet's theorem on arithmetic progressions.
+
+    \noindent Through my experiments, I have also made the following remarkable observation:
+    the number of irreducible factors is equal to the
+    dimension of the kernel of the relevant matrix,
+    at least to the extent of my experiments.
+    I have tried to prove this, but I have not been able to do so.
+    An open question is whether this is true in general,
+    and for arbitrary cyclotomic polynomials (or even Galois extensions?).
+    or if it is just a coincidence.
 
     \section{$[T^2 + T + 1]$ in $\mathbb{F}_2[T] / (\pi)$}
 
@@ -148,3 +161,7 @@
 %Up to 10000
 %Counter({(2, 9): 126, (1, 6): 125, (10, 1): 125, (1, 7): 124, (1, 8): 124, (5, 10): 123, (2, 3): 122, (2, 5): 121, (1, 2): 120, (2, 4): 118})
 %Counter({1: 493, 2: 487, 10: 125, 5: 123})
+
+%Up to 200000
+%Counter({(1, 2): 1816, (1, 8): 1804, (2, 3): 1803, (1, 7): 1801, (2, 5): 1799, (5, 10): 1798, (10, 1): 1794, (1, 6): 1792, (2, 9): 1792, (2, 4): 1784})
+%Counter({1: 7213, 2: 7178, 5: 1798, 10: 1794})

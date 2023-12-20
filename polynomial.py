@@ -283,6 +283,9 @@ def gcd(a: Polynomial, b: Polynomial) -> Polynomial:
     assert a.char == b.char, 'Polynomials must have the same characteristic'
     if b == 0:
         return a
+    if a == 0:
+        return b
+
     return gcd(b, a % b)
 
 

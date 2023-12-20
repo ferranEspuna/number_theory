@@ -6,11 +6,10 @@
 \usepackage[margin=3cm]{geometry}
 
 % Packages
-\usepackage{amsmath}
+\usepackage{amsmath,amsthm}
 \usepackage{mathtools}
 \usepackage{amsfonts}
 % Packages
-\usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{tikz-cd}
 \usepackage{wasysym}
@@ -31,7 +30,7 @@
 
 \theoremstyle{definition}
 \newtheorem{defn}[theorem]{Definition}
-\newtheorem{rk}[theorem]{Remark}
+\newtheorem*{rk}{Remark}
 
 
 
@@ -40,14 +39,14 @@
 
     \maketitle
 
-    \begin{claim}
+    \begin{rk}
         $f(X)=X^3-X+1$ is irreducible over $\mathbb{Q}$.
         \begin{proof}
             If it were reducible, it would have a root in $\mathbb{Q}$.
             By the rational root theorem, the only possible rational roots of  $f$ are $\pm 1$.
             None of these are roots of $f$.
         \end{proof}
-    \end{claim}
+    \end{rk}
 
     \begin{claim}
         Let $\theta$ be a root of $f$.
@@ -66,11 +65,12 @@
     \end{claim}
 
     \begin{rk}
-        More precisely, the $f(X) = (X+10)^2(X+3)$
-        so
-        $\mathfrak{p}_1 = \left<  23, \theta+10 \right>_{\mathcal{O}_K}$
-        and
-        $\mathfrak{p}_2 = \left<  23, \theta+3 \right>_{\mathcal{O}_K}$.
+        We can take the Kummer-Dedekind theorem a bit further to say that $23$ is the \textit{only} prime that ramifies in $K$.
+        Indeed, for $p$ to ramify, $f$ must be inseparable modulo $p$, that is, $f$ and $f' = 3X^2-1$ must have a common root modulo $p$.
+        Let $u$ be a root of $f'$, i.e., $3u^2=1$.
+        Since it must be a root of $f$ as well, we have:
+        \[u(1-u^2) = u-u^3 = 1 \Rightarrow 2u = u(3-1) = u(3-3u^2) = 3u(1-u^2) = 3 \Rightarrow 4 = 3(2u)^2 = 27 \Rightarrow 23 = 0\]
+
     \end{rk}
 
     \begin{claim}
@@ -91,13 +91,11 @@
             Additionally, $\alpha_1 + \alpha_2 = -\theta$.
             With this information, and reducing any polynomials in $\theta$ modulo $f$ when needed,
             we can compute the discriminant of $f$:
-
             \begin{align*}
                 \Delta(f) &= [(\theta-\alpha_1) (\theta-\alpha_2) (\alpha_1 - \alpha_2)]^2 \\
                 &= [\theta^2 - (\alpha_1 + \alpha_2) \theta + \alpha_1 \alpha_2]^2[(\alpha_1 + \alpha_2)^2 - 4 \alpha_1 \alpha_2] \\
                 &= [3\theta^2-1]^2[4-3\theta^2] = -23
             \end{align*}
-
             So $-23$ is a square in $N$ and we are done.
         \end{proof}
         
@@ -107,20 +105,40 @@
         $N \mid L$ is unramified.
         \begin{proof}
 
-            Let's first calculate the discriminant of $L\mid K$:
-            %Por favor que de 23 o me pego un tiro
-            %...
-            this means that if a prime $\mathfrak{q}$ ramifies in $L\mid K$,
-            then $\mathfrak{q} \mid 23 \mathcal{O}_L$.
-            But since $N \mid L$ is Galois, the ramification index of
-            $\mathfrak{q}$ in $L\mid K$ must divide $[L:K] = [\mathbb{Q} : N] / [N : K] = 3$, so it must be 3.
-            Therefore, ramification index of $23$ in $N\mid \mathbb{Q}$ is a multiple of 3
-            (any factor of $\mathfrak{q}$ in the factorization of $23 \mathcal{O}_L$ would be raised to a power multiple of 3).
+            
+            Suppose that a prime $\mathfrak{q} \subset \mathcal{O}_L$ ramifies in $N$.
+            Since $N \mid L$ is Galois, its ramification index must divide $[N:L] = [N : \mathbb{Q}] / [L : \mathbb{Q}] = 3 \Rightarrow$ it is 3.
+            Let $p = \mathfrak{q} \cap \mathbb{Z}$ the corresponding prime in $\mathbb{Z}$.
+            Since $\mathfrak{q}$ divides $p\mathcal{O}_L$, the ramification index of $p$ in $N \mid \mathbb{Q}$ must be a multiple of 3.
+            This means that $p$ ramifies in $K \mid \mathbb{Q}$, because $3 \nmid 2 = [N:K]$, and $N \mid K$ is Galois.
+            By a previous remark, $p = 23$ is the only prime that ramifies in $K \mid \mathbb{Q}$.
+            Therefore, $p = 23$.
             However, we have seen that a square ($\mathfrak{p}_1^2$) divides $23 \mathcal{O}_N$,
             so the ramification index of $23$ in $N\mid \mathbb{Q}$ must be exactly 6, so $23\mathcal{O}_N = \mathfrak{r}^6$.
             This is incompatible with the fact that $23 \mathcal{O}_K = \mathfrak{p}_1^2 \mathfrak{p}_2$:
-            If two copies of $\mathfrak{r}$ are in $\mathfrak{p}_1^2$, then $\mathfrak{p_2}=\mathfrak{p}_1^4$,
-            while if four copies of $\mathfrak{r}$ are in $\mathfrak{p}_1^2$, then $\mathfrak{p_2}=\mathfrak{p}_1$.
+            If two copies of $\mathfrak{r}$ are in $\mathfrak{p}_1^2$ (i.e., $\mathfrak{p}_1 = \mathfrak{r}$), then $\mathfrak{p_2}=\mathfrak{p}_1^4$,
+            while if four copies of $\mathfrak{r}$ are in $\mathfrak{p}_1^2$, then $\mathfrak{p}_2=\mathfrak{p}_1$.
+
+        \end{proof}
+    \end{claim}
+    
+    \begin{claim}
+        $K = N^{D_{\mathcal{P}/23}}$ for some prime $\mathcal{P} \subset \mathcal{O}_N$ above $23$.
+        \begin{proof}
+
+            Let us come back to the factorization of 23 in $\mathcal{O}_N$.
+            Since $23 = \mathfrak{p}_1^2 \mathfrak{p}_2$, and in $N$ all primes must have the same exponent, $\mathfrak{p}_2$ must be a square (say, $\mathfrak{p}_2 = \mathfrak{r}^2$),
+            with $\mathfrak{r}$ a prime in $\mathcal{O}_N$.
+            Because the extension is Galois, we have the formula $6=efg$, with $e = 2$ and $g \geq 2$.
+            We must have $f = 1$ and $g = 3$, so $\mathfrak{p}_1 = \mathfrak{s}_1\mathfrak{s}_2$.
+            All in all, $23 \mathcal{O}_N = \mathfrak{r}^2 \mathfrak{s}_1^2\mathfrak{s}_2^2$.
+            Since $\text{Gal}(N\mid K)$ acts transitively on the set $\{\mathfrak{s}_1, \mathfrak{s}_2\}$ of primes dividing $\mathfrak{p}_1$,
+            its generator $\tau$ swaps them.
+            If we think of the action on the primes dividing $23$, this must mean that
+            $\tau(\mathfrak{r}) = \mathfrak{r} \Rightarrow \tau \in D_{\mathfrak{r}/23}$,
+            which is a subgroup of $\text{Gal}(N\mid\mathbb{Q})$
+            with order $ef=2$.
+            Therefore, $K = N^{<\tau>} = N^{D_{\mathfrak{r}/23}}$.
 
         \end{proof}
     \end{claim}
