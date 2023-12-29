@@ -40,7 +40,7 @@
     \maketitle
 
     \begin{rk}
-        Let K = $\mathbb{Q}\left(\sqrt {-23}\right)$.
+        Let $K = \mathbb{Q}\left(\sqrt {-23}\right)$.
         Because $-23 \equiv 1 \pmod 4$, $\mathcal{O}_K = \mathbb{Z}\left[\frac{1+\sqrt {-23}}{2}\right]$
         and
         $\text{disc}(K) = \left(
@@ -52,7 +52,7 @@
     \end{rk}
 
     \begin{claim}
-        The ideal class group of $K$ is isomorphic to $\mathbb{Z}/3\mathbb{Z}$.
+        The ideal class group of $K = \mathbb{Q}\left(\sqrt {-23}\right)$ is isomorphic to $\mathbb{Z}/3\mathbb{Z}$.
 
         \begin{proof}
             By the Minkowski bound calculated above, all ideal classes will have a representative with norm less than $4$.
@@ -80,5 +80,89 @@
         \end{proof}
 
     \end{claim}
+
+    \begin{rk}
+        In the proof of the following claim, we use repeatedly tha fact that
+        if $K \subset L$ is a field extension and $\mathfrak{a}, \mathfrak{b} \subset \mathcal{O}_K$ are ideals,
+        then $(\mathfrak{a}\mathfrak{b})\mathcal{O}_L = (\mathfrak{a}\mathcal{O}_L) (\mathfrak{b}\mathcal{O}_L)$.
+        To avoid writing this repeatedly, we will signal its uses with the color \textcolor{blue}{blue}.
+    \end{rk}
+    
+    \begin{claim}
+        Let $K \subset L$ be number fields.
+        Let $\mathcal{P}_i \subset \mathcal{O}L_i$ be prime ideals,
+        $\mathfrak{p}_i \coloneqq \mathcal{P}_i \cap \mathcal{O}K$ and
+        $f_i \coloneqq f(\mathcal{P}_i \mid \mathfrak{p}_i)$.
+        if $J \coloneqq \mathcal{P}_1^{m_1} \cdots \mathcal{P}_k^{m_k}$ is principal,
+        then $I \coloneqq \mathfrak{p}_1^{f_1 m_1} \cdots \mathfrak{p}_k^{f_k m_k}$ is principal.
+
+        \begin{proof}
+            As suggested, I have taken inspiration in the guided exercises in the book by Daniel Marcus.\linebreak
+
+            \noindent We will start dealing with the case in which $L\mid K$ is Galois.
+            In that case, for $1 \leq i \leq k$,\linebreak
+            $\mathfrak{p_i}\mathcal{O}_L = (\mathcal{P}_{i,1} \cdots \mathcal{P}_{i, g_i})^{e_i}$
+            where $\mathcal{P}_{i,j}$ are the primes above $\mathfrak{p}_i$ (including $\mathcal{P}_i$).
+            Because the Galois group of the extension acts transitively on this set of primes
+            (say, for $1 \leq j \leq g_i$, $\sigma_j(\mathcal{P}_{i}) = \mathcal{P}_{i, j}$),
+            then the subset of $\text{Gal}(L \mid K)$ sending $\mathcal{P}_{i}$ to $\mathcal{P}_{i, j}$
+            is $\sigma_j D_{\mathcal{P}_i \mid \mathfrak{p_i}}$ which has $e_i f_i$ elements.
+            All in all,
+            $\mathfrak{p_i}^{f_i}\mathcal{O}_L \, \textcolor{blue}{=} \, (\mathfrak{p_i}\mathcal{O}_L)^{f_i} =
+            \prod_{\sigma \in \text{Gal}(L \mid K)}\sigma(\mathcal{P}_i)$.
+            This means that \[I\mathcal{O}_L \, \textcolor{blue}{=} \, \prod_{\sigma \in \text{Gal}(L \mid K)}\sigma(J) =
+            \prod_{\sigma \in \text{Gal}(L \mid K)}(\sigma(\alpha)) = \left(\prod_{\sigma \in \text{Gal}(L \mid K)}\sigma(\alpha)\right)
+            = (N_{L \mid K}(\alpha))\mathcal{O}_L\]
+            To finish, we just need to show that this implies $I = (N_{L \mid K}(\alpha))$.
+            This is true for any two ideals of $\mathcal{O}_K$:
+            \textcolor{blue}{ we can reconstruct } the factorization of any ideal
+            $\mathfrak{a} \subset \mathcal{O}_K$ into primes from
+            that of $\mathfrak{a}\mathcal{O}_L \subset \mathcal{O}_L$,
+            because each prime in $\mathcal{O}_L$ is above a unique prime in $\mathcal{O}_K$
+            and always appears in its extension with a fixed exponent.
+            Therefore, $\mathfrak{a}\mathcal{O}_L = \mathfrak{b}\mathcal{O}_L \Rightarrow \mathfrak{a} = \mathfrak{b}$.
+
+            \begin{rk}
+                In fact, because it is well known that
+                $\mathfrak{a}\mathcal{O}_L =
+                ((\mathfrak{a}\mathcal{O}_L)\cap \mathcal{O}_K)\mathcal{O}_L$,
+                we can conclude that
+                $\mathfrak{a} = (\mathfrak{a}\mathcal{O}_L)\cap \mathcal{O}_K$.
+            \end{rk}
+
+            \noindent Now, let us consider the general case.
+            Let $M$ be the Galois closure of $L \mid K$.
+            Then, $M \mid K$ is Galois,
+            so we can apply the previous result to the ideal $(\alpha)\mathcal{O}_M$ and $M \mid K$.
+            Let $\mathcal{P}_i\mathcal{O}_M = \mathcal{Q}_{i, 1}^{\tilde{e}_i} \cdots \mathcal{Q}_{i, \tilde{g}_i}^{\tilde{e}_i}$.
+            For a given prime $\mathcal{Q}_{i, j}$ in $M$ above $\mathcal{P}_i$,
+            $\mathcal{Q}_{i, j} \cap \mathcal{O}_L = \mathcal{P}_{i}
+            \Rightarrow \mathcal{Q}_{i, j} \cap \mathcal{O}_K = \mathfrak{p}_i$.
+            We get that
+            \[
+                (N_{M \mid K}(\alpha)) = \mathfrak{p}_1^{\hat{f}_1 \tilde{e}_1 \tilde{g}_1 m_1} \cdots \mathfrak{p}_k^{\hat{f}_k \tilde{e}_k \tilde{g}_k m_k}
+            \]
+            where $\hat{f}_i$ is the inertia degree of $\mathfrak{p}_i$ in $M \mid K$.
+            We know that $\hat{f}_i = \tilde{f}_i f_i$
+            (where $\tilde{f_i} \coloneqq f(\mathcal{Q}_{i, j} \mid \mathcal{P}_i)$ for any $j$),
+            and also $\tilde{e}_i \tilde{g}_i \tilde{f}_i = [M : N]$.
+            All together, we get that
+            \[
+                (N_{M \mid K}(\alpha)) = (\mathfrak{p}_1^{f_1 m_1} \cdots \mathfrak{p}_k^{f_k m_k})^{[M : N]} = I^{[M : N]}
+            \]
+            However,
+            $\alpha \in L$ so
+            $N_{M \mid K}(\alpha) = N_{L \mid K}(N_{M \mid L}(\alpha)) =
+            N_{L \mid K}(\alpha^{[M : L]}) = N_{L \mid K}(\alpha)^{[M : L]}$
+            so (for example, by unique factorization into primes),
+            $I = (N_{L \mid K}(\alpha))$, just like in the Galois case.
+        \end{proof}
+    \end{claim}
+
+    \begin{claim}
+        $L \coloneqq \mathbb{Q}(\zeta_{23})$ has $h_L \geq 3$
+
+    \end{claim}
+
 
 \end{document}
